@@ -1,0 +1,76 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background: red !important;
+}
+
+/* NAVBAR */
+.navbar {
+    background: #1e2a38;
+    padding: 15px;
+    text-align: center;
+}
+
+.navbar a {
+    color: white;
+    margin: 0 20px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.navbar a:hover {
+    color: #00c9a7;
+}
+
+/* CARD CONTAINER */
+.container {
+    width: 35%;
+    margin: 80px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 20px rgba(0,0,0,0.2);
+}
+
+/* HEADINGS */
+h2 {
+    text-align: center;
+    color: #1e2a38;
+}
+
+/* INPUTS */
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background: #00c9a7;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #009e87;
+}
+
+/* FOOTER */
+.footer {
+    background: #1e2a38;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
