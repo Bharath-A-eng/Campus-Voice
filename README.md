@@ -115,3 +115,6 @@ Campus Voice aims to provide students with a convenient and organized way to rai
 GitHub: https://github.com/Bharath-A-eng
 
 Project Repository: https://github.com/Bharath-A-eng/Campus-Voice
+
+<img width="1030" height="739" alt="Screenshot 2026-05-17 111806" src="https://github.com/user-attachments/assets/db123c2c-821b-4b11-acb7-aa6379c0538d" />
+
