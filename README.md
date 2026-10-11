@@ -116,5 +116,13 @@ GitHub: https://github.com/Bharath-A-eng
 
 Project Repository: https://github.com/Bharath-A-eng/Campus-Voice
 
-<img width="1030" height="739" alt="Screenshot 2026-05-17 111806" src="https://github.com/user-attachments/assets/db123c2c-821b-4b11-acb7-aa6379c0538d" />
+SCREEN SHOTS OF CAMPUS VOICE WEBSITE..
+<img width="736" height="719" alt="Screenshot 2026-05-17 101151" src="https://github.com/user-attachments/assets/4e1d9a27-5ba6-4b9e-8a51-41ca14f6f5a7" />
+<img width="1565" height="735" alt="Screenshot 2026-05-17 101442" src="https://github.com/user-attachments/assets/700d142e-2eda-46ff-9854-7e8c928b7c9a" />
+<img width="1638" height="736" alt="Screenshot 2026-05-17 101628" src="https://github.com/user-attachments/assets/142ac886-27a8-4c92-9c5e-904e826c9de3" />
+<img width="696" height="736" alt="Screenshot 2026-05-17 102113" src="https://github.com/user-attachments/assets/3a8df2a8-a1a0-4fbe-a38b-4592e44412f4" />
+<img width="1354" height="733" alt="Screenshot 2026-05-17 102240" src="https://github.com/user-attachments/assets/e1ba382a-e8b6-46a0-a3e6-f6247ef0fce7" />
+<img width="906" height="735" alt="Screenshot 2026-05-17 105908" src="https://github.com/user-attachments/assets/16c63073-4e38-4873-88dc-f5611e6d8181" />
+<img width="1030" height="739" alt="Screenshot 2026-05-17 111806" src="https://github.com/user-attachments/assets/5ccb760a-ea4f-4287-a084-1b42d22f4878" />
+
 
