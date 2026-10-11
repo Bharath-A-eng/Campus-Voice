@@ -8,6 +8,7 @@
         return;
     }
 
+    String path = request.getContextPath();
     int total = 0, pending = 0, resolved = 0, rejected = 0;
 %>
 <!DOCTYPE html>
@@ -121,13 +122,13 @@
     <b><i class="fas fa-graduation-cap"></i> CampusVoice</b>
 
     <div>
-        <a href="complaint.jsp" class="btn btn-primary btn-sm">
+        <a href="<%= path %>/complaint.jsp" class="btn btn-primary btn-sm">
             <i class="fas fa-plus"></i> New
         </a>
-        <a href="profile.jsp" class="btn btn-info btn-sm">
+        <a href="<%= path %>/profile.jsp" class="btn btn-info btn-sm">
             <i class="fas fa-user"></i> Profile
         </a>
-        <a href="logout" class="btn btn-danger btn-sm">
+        <a href="<%= path %>/LogoutServlet" class="btn btn-danger btn-sm">
             <i class="fas fa-sign-out-alt"></i> Logout
         </a>
     </div>
@@ -257,7 +258,7 @@
                         <%
                             if (file != null && !file.trim().isEmpty()) {
                                 String lower = file.toLowerCase();
-                                String filePath = "uploads/" + file;
+                                String filePath = path + "/uploads/" + file;
                                 if (lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".png") || lower.endsWith(".gif") || lower.endsWith(".webp")) {
                         %>
                         <img src="<%= filePath %>" class="preview-img" alt="Complaint File">
@@ -277,11 +278,11 @@
                         %>
                     </td>
                     <td>
-                        <a href="complaint.jsp?editId=<%= id %>" class="btn btn-warning btn-sm">
+                        <a href="<%= path %>/complaint.jsp?editId=<%= id %>" class="btn btn-warning btn-sm">
                             <i class="fas fa-edit"></i> Edit
                         </a>
 
-                        <form action="DeleteComplaintServlet" method="post" class="action-form"
+                        <form action="<%= path %>/DeleteComplaintServlet" method="post" class="action-form"
                               onsubmit="return confirm('Are you sure you want to delete this complaint?');">
                             <input type="hidden" name="id" value="<%= id %>">
                             <button type="submit" class="btn btn-danger btn-sm">
@@ -348,4 +349,4 @@
 </script>
 
 </body>
-</html>
+</html>s

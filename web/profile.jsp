@@ -86,7 +86,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 40px;
+      font-size: 45px;
       margin: auto;
       margin-bottom: 20px;
     }
@@ -95,8 +95,8 @@
     .form-control {
       background: rgba(255,255,255,0.08);
       border: none;
-      color: white;
-      border-radius: 8px;
+      color: green;
+      border-radius: px;
     }
 
     .form-control::placeholder {
@@ -104,14 +104,17 @@
     }
 
     /* BUTTON */
-    .btn-update {
-      background: linear-gradient(45deg, #7b5cff, #00c9a7);
-      border: none;
-      color: white;
-      padding: 12px;
-      border-radius: 8px;
-      transition: 0.3s;
-    }
+   .btn-update {
+       background: linear-gradient(45deg, #7b5cff, #00c9a7);
+       border: none;
+       color: blue;
+       padding: 12px;
+       border-radius: 8px;
+       transition: 0.3s;
+       font-family: 'Segoe UI', sans-serif;
+       font-size: 25px;
+       font-weight: 500;
+   }
 
     .btn-update:hover {
       transform: scale(1.05);
@@ -171,9 +174,7 @@
              placeholder="Enter new password">
     </div>
 
-    <button class="btn btn-update w-100">
-      💾 Update Profile
-    </button>
+
 
   </form>
 

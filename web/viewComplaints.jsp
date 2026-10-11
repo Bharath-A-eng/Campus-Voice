@@ -7,6 +7,8 @@
         response.sendRedirect("adminLogin.jsp");
         return;
     }
+
+    String path = request.getContextPath();
 %>
 
 <html>
@@ -76,7 +78,7 @@
     <b><i class="fas fa-user-shield"></i> Admin Panel</b>
     <div>
         <%= admin %>
-        <a href="logout" class="btn btn-danger btn-sm">Logout</a>
+        <a href="<%= path %>/LogoutServlet" class="btn btn-danger btn-sm">Logout</a>
     </div>
 </div>
 
@@ -102,7 +104,6 @@
         }
     %>
 
-    <!-- CARDS -->
     <div class="row text-center mb-4">
         <div class="col-md-3"><div class="card"><h6>Total</h6><h3><%= total %></h3></div></div>
         <div class="col-md-3"><div class="card"><h6>Pending</h6><h3 id="pending"><%= pending %></h3></div></div>
@@ -110,7 +111,6 @@
         <div class="col-md-3"><div class="card"><h6>Rejected</h6><h3 id="rejected"><%= rejected %></h3></div></div>
     </div>
 
-    <!-- PIE CHART -->
     <div class="row justify-content-center mb-4">
         <div class="col-md-4">
             <div class="chart-box text-center">
@@ -120,14 +120,12 @@
         </div>
     </div>
 
-    <!-- SEARCH -->
     <div class="search-wrapper mb-3">
         <i class="fas fa-search"></i>
         <input type="text" id="searchInput" class="form-control search-input"
                placeholder="Search complaints...">
     </div>
 
-    <!-- TABLE -->
     <div class="table-container">
         <table class="table table-dark table-hover" id="complaintTable">
 
@@ -165,7 +163,7 @@
                     String date = (ts!=null)?sdf.format(ts):"N/A";
 
                     String file = rs.getString("file_path");
-                    String filePath = "uploads/" + file;
+                    String filePath = path + "/uploads/" + file;
             %>
 
             <tr>
@@ -193,6 +191,10 @@
                     </a>
                     <%
                             }
+                        } else {
+                    %>
+                    <span>No file</span>
+                    <%
                         }
                     %>
                 </td>
@@ -221,7 +223,6 @@
 
 </div>
 
-<!-- SEARCH -->
 <script>
     document.getElementById("searchInput").addEventListener("keyup", function(){
         let v=this.value.toLowerCase();
@@ -231,7 +232,6 @@
     });
 </script>
 
-<!-- PIE CHART -->
 <script>
     let pendingCount = <%= pending %>;
     let resolvedCount = <%= resolved %>;
@@ -254,7 +254,6 @@
     });
 </script>
 
-<!-- AJAX STATUS UPDATE -->
 <script>
     function updateStatus(btn, id, newStatus){
 
@@ -263,10 +262,10 @@
         let badge = document.getElementById("status-"+id);
         let oldStatus = badge.innerText.trim();
 
-        fetch("UpdateStatusServlet",{
+        fetch("<%= path %>/UpdateStatusServlet",{
             method:"POST",
             headers:{'Content-Type':'application/x-www-form-urlencoded'},
-            body:"id="+id+"&status="+newStatus
+            body:"id="+id+"&status="+encodeURIComponent(newStatus)
         })
             .then(res=>res.text())
             .then(data=>{
@@ -279,7 +278,6 @@
 
                 badge.innerText = newStatus;
 
-                /* FIX COUNTS */
                 if(oldStatus==="Pending") pendingCount--;
                 if(oldStatus==="Resolved") resolvedCount--;
                 if(oldStatus==="Rejected") rejectedCount--;
@@ -288,17 +286,18 @@
                 if(newStatus==="Resolved") resolvedCount++;
                 if(newStatus==="Rejected") rejectedCount++;
 
-                /* UPDATE CARDS */
                 document.getElementById("pending").innerText = pendingCount;
                 document.getElementById("resolved").innerText = resolvedCount;
                 document.getElementById("rejected").innerText = rejectedCount;
 
-                /* UPDATE CHART */
                 pieChart.data.datasets[0].data = [pendingCount, resolvedCount, rejectedCount];
                 pieChart.update();
 
                 btn.disabled = false;
-
+            })
+            .catch(() => {
+                btn.disabled = false;
+                alert("Status update failed");
             });
     }
 </script>

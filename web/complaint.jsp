@@ -8,6 +8,8 @@
         return;
     }
 
+    String path = request.getContextPath();
+
     boolean editMode = false;
     int editId = 0;
     String subjectValue = "";
@@ -96,11 +98,12 @@
             border-radius: 8px;
         }
 
-        .form-control::placeholder {
+        .form-control::placeholder,
+        textarea::placeholder {
             color: #ccc;
         }
 
-        .form-control:focus, select:focus {
+        .form-control:focus, select:focus, textarea:focus {
             background: rgba(255,255,255,0.12);
             color: white;
             box-shadow: 0 0 0 0.2rem rgba(123,92,255,0.25);
@@ -122,10 +125,16 @@
             border-radius: 10px;
             cursor: pointer;
             transition: 0.3s;
+            background: rgba(255,255,255,0.04);
         }
 
         .upload-box:hover {
             background: rgba(255,255,255,0.1);
+        }
+
+        .upload-box.dragover {
+            background: rgba(255,255,255,0.12);
+            border-color: #00c9a7;
         }
 
         .btn-submit {
@@ -143,14 +152,25 @@
         }
 
         #preview {
-            margin-top: 10px;
+            margin-top: 15px;
             display: none;
+            background: rgba(255,255,255,0.06);
+            padding: 12px;
+            border-radius: 10px;
         }
 
         #preview img {
             width: 120px;
             border-radius: 10px;
             border: 2px solid #00c9a7;
+            margin-top: 10px;
+        }
+
+        #fileNameDisplay {
+            margin: 0;
+            font-weight: 600;
+            color: #9be7d8;
+            word-break: break-all;
         }
 
         .existing-file-box {
@@ -158,6 +178,15 @@
             padding: 10px 15px;
             border-radius: 10px;
             margin-top: 10px;
+        }
+
+        .existing-file-box a {
+            color: #7fdfff;
+            text-decoration: none;
+        }
+
+        .existing-file-box a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -169,9 +198,9 @@
     </div>
 
     <div>
-        <a href="userDashboard.jsp"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
-        <a href="profile.jsp"><i class="fa-solid fa-user"></i> Profile</a>
-        <a href="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        <a href="<%= path %>/userDashboard.jsp"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+        <a href="<%= path %>/profile.jsp"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="<%= path %>/LogoutServlet"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
     </div>
 </div>
 
@@ -181,7 +210,7 @@
         <%= editMode ? "Edit Complaint" : "Submit Complaint" %>
     </h3>
 
-    <form action="<%= editMode ? "EditComplaintServlet" : "ComplaintServlet" %>" method="post" enctype="multipart/form-data">
+    <form action="<%= path %>/<%= editMode ? "EditComplaintServlet" : "ComplaintServlet" %>" method="post" enctype="multipart/form-data">
         <% if (editMode) { %>
         <input type="hidden" name="id" value="<%= editId %>">
         <% } %>
@@ -221,26 +250,29 @@
                       placeholder="Provide detailed information" required><%= descriptionValue %></textarea>
         </div>
 
-        <div class="mb-3">
-            <label><i class="fa-solid fa-paperclip"></i> Attach File</label>
-            <div class="upload-box" id="dropArea">
-                <p><i class="fa-solid fa-cloud-arrow-up fa-2x"></i></p>
-                <p>Drag & Drop file or click to upload</p>
-                <input type="file" name="file" id="fileInput" hidden>
-            </div>
-            <small class="text-muted">Max file size: 5MB</small>
+       <div class="mb-3">
+           <label><i class="fa-solid fa-paperclip"></i> Attach File</label>
+           <div class="upload-box" id="dropArea">
+               <p><i class="fa-solid fa-cloud-arrow-up fa-2x"></i></p>
+               <p id="uploadText">Drag & Drop file or click to upload</p>
+               <input type="file" name="file" id="fileInput" hidden>
+           </div>
+           <small class="text-muted">Max file size: 5MB</small>
 
-            <% if (editMode && existingFile != null && !existingFile.trim().isEmpty()) { %>
-            <div class="existing-file-box">
-                Current file: <a href="uploads/<%= existingFile %>" target="_blank" class="text-info"><%= existingFile %></a>
-            </div>
-            <% } %>
+           <% if (editMode && existingFile != null && !existingFile.trim().isEmpty()) { %>
+           <div class="existing-file-box">
+               Current file:
+               <a href="<%= request.getContextPath() %>/uploads/<%= existingFile %>" target="_blank" class="text-info">
+                   <%= existingFile %>
+               </a>
+           </div>
+           <% } %>
 
-            <div id="preview">
-                <p>Preview:</p>
-                <img id="previewImg" alt="Preview">
-            </div>
-        </div>
+           <div id="preview" style="display:none;">
+               <p id="fileNameDisplay" style="margin-bottom:10px; font-weight:bold; color:#00c9a7;"></p>
+               <img id="previewImg" alt="Preview" style="display:none;">
+           </div>
+       </div>
 
         <button class="btn btn-submit w-100" type="submit">
             <i class="fa-solid <%= editMode ? "fa-floppy-disk" : "fa-paper-plane" %>"></i>
@@ -249,11 +281,14 @@
     </form>
 </div>
 
+
 <script>
     const dropArea = document.getElementById("dropArea");
     const fileInput = document.getElementById("fileInput");
     const preview = document.getElementById("preview");
     const previewImg = document.getElementById("previewImg");
+    const fileNameDisplay = document.getElementById("fileNameDisplay");
+    const uploadText = document.getElementById("uploadText");
 
     dropArea.addEventListener("click", () => fileInput.click());
 
@@ -279,17 +314,22 @@
 
     function showPreview(file) {
         if (!file) return;
-        if (!file.type.startsWith("image/")) {
-            preview.style.display = "none";
-            return;
-        }
 
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.style.display = "block";
-            previewImg.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
+        preview.style.display = "block";
+        fileNameDisplay.innerText = "Selected File: " + file.name;
+        uploadText.innerText = "Selected: " + file.name;
+
+        if (file.type.startsWith("image/")) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.style.display = "block";
+                previewImg.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            previewImg.style.display = "none";
+            previewImg.src = "";
+        }
     }
 </script>
 
